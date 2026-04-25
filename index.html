@@ -1,28 +1,167 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Cardápio online da D'Gusta Café com pedidos via WhatsApp."
+    />
+    <title>D'Gusta Café | Cardápio Online</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..700&family=Nunito+Sans:ital,wght@0,200..1000;1,200..1000&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./assets/styles/mainpage.css" />
+  </head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Site Cardapio</title>
-    <link rel="stylesheet" href="./assets/styles/mainpage.css">
-</head>
-
-<body>
-    <header>
-        <h1>D'GUSTA <i class="fa-solid fa-utensils"></i> CAFÉ</h1>
+  <body>
+    <header class="hero">
+      <div class="hero__badge">Aberto hoje • 08:00 - 20:00</div>
+      <h1>D'Gusta Café</h1>
+      <p>
+        Seu cardápio artesanal com pedido direto no WhatsApp, rápido e sem
+        complicação.
+      </p>
+      <a href="#menu" class="hero__cta">Ver cardápio</a>
     </header>
-    <hr>
-    <main>
-        <aside>
 
-        </aside>
-        <section>
+    <main class="layout" id="menu">
+      <section class="menu-area" aria-label="Cardápio de produtos">
+        <div class="section-head">
+          <h2>Escolha seus favoritos</h2>
+          <p>
+            Toque em adicionar, personalize com adicionais e finalize seu pedido
+            em segundos.
+          </p>
+        </div>
 
-        </section>
+        <div class="menu-grid" id="menuGrid"></div>
+      </section>
+
+      <aside class="cart-panel" aria-label="Resumo do pedido">
+        <div class="cart-panel__header">
+          <h2>Seu pedido</h2>
+          <button type="button" id="mobileCartClose" class="mobile-cart-close" aria-label="Fechar pedido">
+            Fechar
+          </button>
+        </div>
+        <p class="cart-help">
+          Adicione itens no cardápio para montar seu pedido.
+        </p>
+
+        <ul id="cartList" class="cart-list"></ul>
+
+        <div class="cart-total">
+          <span>Total</span>
+          <strong id="cartTotal">R$ 0,00</strong>
+        </div>
+
+        <form id="orderForm" class="order-form">
+          <label for="customerName">Nome</label>
+          <input
+            id="customerName"
+            name="customerName"
+            type="text"
+            placeholder="Seu nome"
+            required
+          />
+
+          <label for="customerPhone">Telefone</label>
+          <input
+            id="customerPhone"
+            name="customerPhone"
+            type="tel"
+            placeholder="(00) 00000-0000"
+            required
+          />
+
+          <label for="orderType">Tipo de pedido</label>
+          <select id="orderType" name="orderType" required>
+            <option value="Retirada">Retirada no balcão</option>
+            <option value="Entrega">Entrega</option>
+          </select>
+
+          <div id="addressWrap" class="address-wrap is-hidden">
+            <label for="customerAddress">Endereço de entrega</label>
+            <input
+              id="customerAddress"
+              name="customerAddress"
+              type="text"
+              placeholder="Rua, número e referência"
+            />
+          </div>
+
+          <label for="paymentMethod">Pagamento</label>
+          <select id="paymentMethod" name="paymentMethod" required>
+            <option value="Pix">Pix</option>
+            <option value="Cartão de Crédito">Cartão de Crédito</option>
+            <option value="Cartão de Débito">Cartão de Débito</option>
+            <option value="Dinheiro">Dinheiro</option>
+          </select>
+
+          <label for="notes">Observações gerais</label>
+          <textarea
+            id="notes"
+            name="notes"
+            rows="3"
+            placeholder="Ex.: sem açúcar, sem cebola..."
+          ></textarea>
+
+          <button type="submit" class="send-btn">
+            <i class="fa-brands fa-whatsapp"></i>
+            Enviar pedido no WhatsApp
+          </button>
+        </form>
+      </aside>
     </main>
-    <footer></footer>
-    <script src="https://kit.fontawesome.com/02f69001e4.js" crossorigin="anonymous"></script>
-</body>
 
+    <button type="button" id="mobileCartToggle" class="mobile-cart-toggle" aria-label="Abrir pedido">
+      <span class="mobile-cart-toggle__label">Ver pedido</span>
+      <span id="mobileCartCount" class="mobile-cart-toggle__count">0 itens</span>
+      <strong id="mobileCartTotal">R$ 0,00</strong>
+    </button>
+    <div id="mobileCartBackdrop" class="mobile-cart-backdrop" aria-hidden="true"></div>
+
+    <dialog id="customizeDialog" class="customize-dialog">
+      <form method="dialog" id="customizeForm">
+        <h3 id="customizeTitle">Personalizar item</h3>
+        <p id="customizePrice"></p>
+
+        <label for="itemQty">Quantidade</label>
+        <input type="number" id="itemQty" min="1" value="1" required />
+
+        <fieldset id="extrasWrap" class="extras-wrap">
+          <legend>Adicionais</legend>
+          <div id="extrasList"></div>
+        </fieldset>
+
+        <label for="itemNote">Observação do item</label>
+        <textarea
+          id="itemNote"
+          rows="2"
+          placeholder="Ex.: bem quente, sem canela..."
+        ></textarea>
+
+        <div class="dialog-actions">
+          <button type="button" id="cancelCustomize" class="btn-secondary">
+            Cancelar
+          </button>
+          <button type="submit" class="btn-primary">Adicionar ao pedido</button>
+        </div>
+      </form>
+    </dialog>
+
+    <footer>
+      <p>D'Gusta Café • Pedidos online via WhatsApp</p>
+    </footer>
+
+    <script
+      src="https://kit.fontawesome.com/02f69001e4.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="./assets/scripts/main.js"></script>
+  </body>
 </html>
