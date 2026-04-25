@@ -247,12 +247,26 @@ function groupByCategory(items) {
 
 function renderMenu() {
   const grouped = groupByCategory(products);
-  const blocks = [];
+  const categoryOrder = [
+    "Bebidas Quentes",
+    "Bebidas Geladas",
+    "Salgados",
+    "Doces",
+    "Combos",
+  ];
 
-  Object.keys(grouped).forEach((category) => {
-    grouped[category].forEach((product, index) => {
-      blocks.push(`
-                <article class="menu-card" style="animation-delay:${(index + 1) * 0.06}s">
+  const orderedCategories = [
+    ...categoryOrder.filter((category) => grouped[category]),
+    ...Object.keys(grouped).filter((category) => !categoryOrder.includes(category)),
+  ];
+
+  let animationIndex = 0;
+  const sections = orderedCategories.map((category) => {
+    const cards = grouped[category]
+      .map((product) => {
+        animationIndex += 1;
+        return `
+                <article class="menu-card" style="animation-delay:${animationIndex * 0.04}s">
                     <span class="tag">${category}</span>
                     <h3>${product.name}</h3>
                     <p>${product.description}</p>
@@ -261,11 +275,24 @@ function renderMenu() {
                         <button class="btn-add" data-product-id="${product.id}" type="button">Adicionar</button>
                     </div>
                 </article>
-            `);
-    });
+            `;
+      })
+      .join("");
+
+    return `
+            <section class="menu-category" aria-label="Categoria ${category}">
+                <div class="menu-category__head">
+                    <h3>${category}</h3>
+                    <span>${grouped[category].length} opcoes</span>
+                </div>
+                <div class="menu-category__items">
+                    ${cards}
+                </div>
+            </section>
+        `;
   });
 
-  menuGrid.innerHTML = blocks.join("");
+  menuGrid.innerHTML = sections.join("");
 
   const addButtons = menuGrid.querySelectorAll(".btn-add");
   addButtons.forEach((button) => {
