@@ -6,7 +6,7 @@
 
 import { getTotal, getItemCount } from "./cart.js";
 
-// ── Formatação de moeda ──────────────────────────────────────────────────────
+// Formatação de moeda
 
 /**
  * Formata um número para o padrão de moeda brasileiro.
@@ -17,7 +17,7 @@ export function formatCurrency(value) {
   return value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 }
 
-// ── Toast (substitui alert()) ────────────────────────────────────────────────
+// Toast (substitui alert())
 
 let toastTimeout = null;
 
@@ -49,7 +49,7 @@ export function showToast(message, type = "success") {
   }, 3000);
 }
 
-// ── Renderização do Menu ─────────────────────────────────────────────────────
+// Renderização do menu
 
 /**
  * Renderiza os cards de produto no grid do menu.
@@ -89,7 +89,7 @@ export function renderMenu(products, onAddClick) {
         <section class="menu-category">
           <div class="menu-category__head">
             <h3>${category}</h3>
-            <span>${items.length} opção${items.length > 1 ? "ões" : ""}</span>
+            <span>${items.length} ${items.length > 1 ? "opções" : "opção"}</span>
           </div>
           <div class="menu-category__items">${cards}</div>
         </section>`;
@@ -129,7 +129,7 @@ function buildProductCard(product, animationIndex) {
     </article>`;
 }
 
-// ── Renderização do Carrinho ─────────────────────────────────────────────────
+// Renderização do carrinho
 
 /**
  * Atualiza toda a UI do carrinho.
@@ -210,7 +210,7 @@ function buildCartItem(item) {
     </li>`;
 }
 
-// ── Busca ────────────────────────────────────────────────────────────────────
+// Busca
 
 /**
  * Filtra produtos pelo termo de busca e/ou categoria ativa.
@@ -233,7 +233,7 @@ export function filterProducts(allProducts, searchTerm, activeCategory) {
   });
 }
 
-// ── Modal de customização ─────────────────────────────────────────────────────
+// Modal de customização
 
 /**
  * Calcula e atualiza o preço total exibido no modal em tempo real.
@@ -293,11 +293,13 @@ export function openCustomizeModal(product, allProducts, onUpsellAdd) {
 
   // Upsell
   const upsellSection = document.getElementById("upsellSection");
+  const isCombo = product.category === "Combos";
   const relatedItems  = allProducts.filter((p) =>
     product.related?.includes(p.id)
   );
 
-  if (relatedItems.length > 0) {
+  if (!isCombo && relatedItems.length > 0) {
+    upsellSection.style.display = "block";
     upsellSection.innerHTML = `
       <p>Aproveite e peça também:</p>
       ${relatedItems
@@ -316,13 +318,14 @@ export function openCustomizeModal(product, allProducts, onUpsellAdd) {
       btn.addEventListener("click", () => onUpsellAdd(btn.dataset.productId));
     });
   } else {
+    upsellSection.style.display = "none";
     upsellSection.innerHTML = "";
   }
 
   document.getElementById("customizeDialog").showModal();
 }
 
-// ── Badge de horário de funcionamento ────────────────────────────────────────
+// Badge de horário de funcionamento
 
 /**
  * Atualiza o badge de horário na hero com base no status retornado pelo schedule.js.

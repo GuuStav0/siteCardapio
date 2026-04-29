@@ -17,19 +17,19 @@ import {
 } from "./ui.js";
 import { getScheduleStatus } from "./schedule.js";
 
-// ── Configuração ─────────────────────────────────────────────────────────────
+// Configuração
 
-const WHATSAPP_NUMBER = "5518996694585";
+const WHATSAPP_NUMBER = "55991999999"; // Substitua pelo número real (somente dígitos, sem espaços ou símbolos)
 const MIN_DELIVERY_VALUE = 20;
 
-// ── Estado da aplicação ──────────────────────────────────────────────────────
+// Estado da aplicação
 
 let cart          = loadCart();
 let activeProduct = null;
 let currentFilter = "all";
 let searchTerm    = "";
 
-// ── Seletores DOM ────────────────────────────────────────────────────────────
+// Seletores DOM
 
 const orderType        = document.getElementById("orderType");
 const deliveryLocation = document.getElementById("deliveryLocation");
@@ -40,7 +40,7 @@ const customerPhone    = document.getElementById("customerPhone");
 const customizeDialog  = document.getElementById("customizeDialog");
 const customizeForm    = document.getElementById("customizeForm");
 
-// ── Helpers ──────────────────────────────────────────────────────────────────
+// Helpers
 
 function getDeliveryFee() {
   if (orderType.value !== "Entrega") return 0;
@@ -54,7 +54,7 @@ function refreshUI() {
   renderCart(cart, getDeliveryFee(), handleRemoveItem);
 }
 
-// ── Carrinho ─────────────────────────────────────────────────────────────────
+// Carrinho
 
 function handleRemoveItem(id) {
   cart = removeItem(cart, id);
@@ -66,7 +66,7 @@ function handleAddToCart(product, quantity, extras, note) {
   renderCart(cart, getDeliveryFee(), handleRemoveItem);
 }
 
-// ── Modal de customização ────────────────────────────────────────────────────
+// Modal de customização
 
 function handleAddButtonClick(productId) {
   activeProduct = PRODUCTS.find((p) => p.id === productId);
@@ -100,27 +100,28 @@ document
   .getElementById("cancelCustomize")
   .addEventListener("click", () => customizeDialog.close());
 
-// ── Filtros de categoria ─────────────────────────────────────────────────────
+// Filtros de categoria
 
-document.querySelectorAll(".filter-btn").forEach((btn) => {
-  btn.addEventListener("click", () => {
-    document
-      .querySelectorAll(".filter-btn")
-      .forEach((b) => b.classList.remove("active"));
-    btn.classList.add("active");
-    currentFilter = btn.getAttribute("data-category");
-    refreshUI();
-  });
+const categoryFilters = document.getElementById("categoryFilters");
+
+categoryFilters.addEventListener("click", (event) => {
+  const btn = event.target.closest(".filter-btn");
+  if (!btn || !categoryFilters.contains(btn)) return;
+
+  document.querySelectorAll(".filter-btn").forEach((b) => b.classList.remove("active"));
+  btn.classList.add("active");
+  currentFilter = btn.getAttribute("data-category");
+  refreshUI();
 });
 
-// ── Busca de produtos ────────────────────────────────────────────────────────
+// Busca de produtos
 
 document.getElementById("searchInput").addEventListener("input", (e) => {
   searchTerm = e.target.value;
   refreshUI();
 });
 
-// ── Entrega ──────────────────────────────────────────────────────────────────
+// Entrega
 
 orderType.addEventListener("change", () => {
   const isDelivery = orderType.value === "Entrega";
@@ -133,7 +134,7 @@ deliveryLocation.addEventListener("change", () => {
   renderCart(cart, getDeliveryFee(), handleRemoveItem);
 });
 
-// ── Máscara de telefone ──────────────────────────────────────────────────────
+// Máscara de telefone
 
 customerPhone.addEventListener("input", (e) => {
   let value = e.target.value.replace(/\D/g, "").slice(0, 11);
@@ -147,7 +148,7 @@ customerPhone.addEventListener("input", (e) => {
   e.target.value = value;
 });
 
-// ── WhatsApp ─────────────────────────────────────────────────────────────────
+// WhatsApp
 
 function buildWhatsAppMessage(data) {
   const deliveryFee = getDeliveryFee();
@@ -194,8 +195,8 @@ orderForm.addEventListener("submit", (e) => {
 
   const isDelivery = orderType.value === "Entrega";
   if (isDelivery) {
-    const subtotal = getTotal(cart);
-    if (subtotal < MIN_DELIVERY_VALUE) {
+    const totalWithFee = getTotal(cart, getDeliveryFee());
+    if (totalWithFee < MIN_DELIVERY_VALUE) {
       showToast(
         `Pedido mínimo para entrega: ${formatCurrency(MIN_DELIVERY_VALUE)}`,
         "error"
@@ -222,7 +223,7 @@ orderForm.addEventListener("submit", (e) => {
   window.open(url, "_blank");
 });
 
-// ── Carrinho mobile ──────────────────────────────────────────────────────────
+// Carrinho mobile
 
 const mobileToggle   = document.getElementById("mobileCartToggle");
 const mobileClose    = document.getElementById("mobileCartClose");
@@ -232,14 +233,74 @@ mobileToggle.addEventListener("click",   () => document.body.classList.add("mobi
 mobileClose.addEventListener("click",    () => document.body.classList.remove("mobile-cart-open"));
 mobileBackdrop.addEventListener("click", () => document.body.classList.remove("mobile-cart-open"));
 
-// ── Horário de funcionamento ──────────────────────────────────────────────────
+// Horário de funcionamento
 
 async function initSchedule() {
   const status = await getScheduleStatus();
   renderScheduleBadge(status);
 }
 
-// ── Inicialização ────────────────────────────────────────────────────────────
+// Inicialização
 
 refreshUI();
 initSchedule();
+
+// Habilitar arrastar horizontal para filtros de categoria (mouse/toque)
+(function enableHorizontalDragging(){
+  const dragTargets = document.querySelectorAll('.category-filters, .menu-category__items');
+  const dragState = new WeakMap();
+
+  dragTargets.forEach((target) => {
+    let pointerDown = false;
+    let dragStarted = false;
+    let capturedPointerId = null;
+
+    target.style.cursor = 'grab';
+
+    target.addEventListener('pointerdown', (event) => {
+      pointerDown = true;
+      dragStarted = false;
+      capturedPointerId = null;
+      dragState.set(target, {
+        pointerId: event.pointerId,
+        startX: event.clientX,
+        startY: event.clientY,
+        scrollLeft: target.scrollLeft,
+      });
+    });
+
+    target.addEventListener('pointermove', (event) => {
+      if (!pointerDown) return;
+      const state = dragState.get(target);
+      if (!state) return;
+
+      const deltaX = Math.abs(event.clientX - state.startX);
+      const deltaY = Math.abs(event.clientY - state.startY);
+      if (!dragStarted && deltaX < 8 && deltaY < 8) return;
+
+      if (!dragStarted) {
+        dragStarted = true;
+        capturedPointerId = event.pointerId;
+        try { target.setPointerCapture(event.pointerId); } catch (err) {}
+      }
+
+      target.classList.add('is-dragging');
+      const walk = state.startX - event.clientX;
+      target.scrollLeft = state.scrollLeft + walk;
+    });
+
+    const stop = (event) => {
+      pointerDown = false;
+      target.classList.remove('is-dragging');
+      if (capturedPointerId !== null) {
+        try { target.releasePointerCapture(capturedPointerId); } catch (err) {}
+      }
+      capturedPointerId = null;
+      dragState.delete(target);
+    };
+
+    target.addEventListener('pointerup', stop);
+    target.addEventListener('pointercancel', stop);
+    target.addEventListener('pointerleave', stop);
+  });
+})();

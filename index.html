@@ -12,31 +12,36 @@
     <style>
     .back-btn {
       position: fixed;
-      top: 20px;
-      left: 20px;
+      top: clamp(12px, 2vw, 20px);
+      left: clamp(12px, 2vw, 20px);
       z-index: 200;
       display: inline-flex;
       align-items: center;
+      justify-content: center;
+      width: clamp(40px, 8vw, 52px);
+      height: clamp(40px, 8vw, 52px);
       gap: 8px;
-      padding: 10px 18px;
+      padding: clamp(8px, 1.5vw, 12px);
       background: #2c1d14;
       border: 2px solid #c89f7b;
-      border-radius: 100px;
+      border-radius: 50%;
       color: #fff;
       text-decoration: none;
       font-family: 'Nunito Sans', sans-serif;
-      font-size: 0.85rem;
+      font-size: clamp(0.75rem, 1.5vw, 0.85rem);
       font-weight: 800;
       box-shadow: 0 4px 16px rgba(0,0,0,0.4);
       transition: background 0.25s, transform 0.25s;
+      cursor: pointer;
+      display: flex;
     }
     .back-btn:hover {
       background: #5f3f2d;
-      transform: translateX(-3px);
+      transform: scale(1.08);
     }
-    @media (max-width: 600px) {
-      .back-btn span { display: none; }
-      .back-btn { padding: 10px 14px; }
+    .back-btn span { display: none; }
+    .back-btn i {
+      font-size: clamp(1rem, 2vw, 1.25rem);
     }
   </style>
 </head>
@@ -86,59 +91,61 @@
       </section>
 
       <aside class="cart-panel" aria-label="Resumo do pedido">
-        <div class="cart-panel__header">
-          <h2>Seu pedido</h2>
-          <button type="button" id="mobileCartClose" class="mobile-cart-close" aria-label="Fechar pedido">Fechar</button>
-        </div>
-        <p class="cart-help">Adicione itens no cardápio para montar seu pedido.</p>
+        <div class="cart-panel__scroll">
+          <div class="cart-panel__header">
+            <h2>Seu pedido</h2>
+            <button type="button" id="mobileCartClose" class="mobile-cart-close" aria-label="Fechar pedido">Fechar</button>
+          </div>
+          <p class="cart-help">Adicione itens no cardápio para montar seu pedido.</p>
 
-        <ul id="cartList" class="cart-list"></ul>
+          <ul id="cartList" class="cart-list"></ul>
 
-        <div class="cart-total">
-          <span id="totalLabel">Total</span>
-          <strong id="cartTotal">R$ 0,00</strong>
-        </div>
-
-        <form id="orderForm" class="order-form">
-          <label for="customerName">Nome</label>
-          <input id="customerName" name="customerName" type="text" placeholder="Seu nome" required />
-
-          <label for="customerPhone">Telefone</label>
-          <input id="customerPhone" name="customerPhone" type="tel" placeholder="(00) 00000-0000" required />
-
-          <label for="orderType">Tipo de pedido</label>
-          <select id="orderType" name="orderType" required>
-            <option value="Retirada">Retirada no balcão</option>
-            <option value="Entrega">Entrega</option>
-          </select>
-
-          <div id="addressWrap" class="address-wrap is-hidden">
-            <label for="deliveryLocation">Seu Bairro (Taxa de Entrega)</label>
-            <select id="deliveryLocation" name="deliveryLocation">
-              <option value="" data-taxa="0">Selecione seu bairro...</option>
-              <option value="Centro" data-taxa="5">Centro - R$ 5,00</option>
-              <option value="Bairro Norte" data-taxa="7">Bairro Norte - R$ 7,00</option>
-              <option value="Bairro Sul" data-taxa="8">Bairro Sul - R$ 8,00</option>
-            </select>
-            <label for="customerAddress">Endereço detalhado</label>
-            <input id="customerAddress" name="customerAddress" type="text" placeholder="Rua, número e referência" />
+          <div class="cart-total">
+            <span id="totalLabel">Total</span>
+            <strong id="cartTotal">R$ 0,00</strong>
           </div>
 
-          <label for="paymentMethod">Pagamento</label>
-          <select id="paymentMethod" name="paymentMethod" required>
-            <option value="Pix">Pix</option>
-            <option value="Cartão de Crédito">Cartão de Crédito</option>
-            <option value="Cartão de Débito">Cartão de Débito</option>
-            <option value="Dinheiro">Dinheiro</option>
-          </select>
+          <form id="orderForm" class="order-form">
+            <label for="customerName">Nome</label>
+            <input id="customerName" name="customerName" type="text" placeholder="Seu nome" required />
 
-          <label for="notes">Observações gerais</label>
-          <textarea id="notes" name="notes" rows="3" placeholder="Ex.: sem açúcar, sem cebola..."></textarea>
+            <label for="customerPhone">Telefone</label>
+            <input id="customerPhone" name="customerPhone" type="tel" placeholder="(00) 00000-0000" required />
 
-          <button type="submit" class="send-btn">
-            <i class="fa-brands fa-whatsapp"></i> Enviar pedido no WhatsApp
-          </button>
-        </form>
+            <label for="orderType">Tipo de pedido</label>
+            <select id="orderType" name="orderType" required>
+              <option value="Retirada">Retirada no balcão</option>
+              <option value="Entrega">Entrega</option>
+            </select>
+
+            <div id="addressWrap" class="address-wrap is-hidden">
+              <label for="deliveryLocation">Seu Bairro (Taxa de Entrega)</label>
+              <select id="deliveryLocation" name="deliveryLocation">
+                <option value="" data-taxa="0">Selecione seu bairro...</option>
+                <option value="Centro" data-taxa="5">Centro - R$ 5,00</option>
+                <option value="Bairro Norte" data-taxa="7">Bairro Norte - R$ 7,00</option>
+                <option value="Bairro Sul" data-taxa="8">Bairro Sul - R$ 8,00</option>
+              </select>
+              <label for="customerAddress">Endereço detalhado</label>
+              <input id="customerAddress" name="customerAddress" type="text" placeholder="Rua, número e referência" />
+            </div>
+
+            <label for="paymentMethod">Pagamento</label>
+            <select id="paymentMethod" name="paymentMethod" required>
+              <option value="Pix">Pix</option>
+              <option value="Cartão de Crédito">Cartão de Crédito</option>
+              <option value="Cartão de Débito">Cartão de Débito</option>
+              <option value="Dinheiro">Dinheiro</option>
+            </select>
+
+            <label for="notes">Observações gerais</label>
+            <textarea id="notes" name="notes" rows="3" placeholder="Ex.: sem açúcar, sem cebola..."></textarea>
+
+            <button type="submit" class="send-btn">
+              <i class="fa-brands fa-whatsapp"></i> Enviar pedido no WhatsApp
+            </button>
+          </form>
+        </div>
       </aside>
     </main>
 
@@ -151,26 +158,28 @@
     <div id="mobileCartBackdrop" class="mobile-cart-backdrop" aria-hidden="true"></div>
 
     <dialog id="customizeDialog" class="customize-dialog">
-      <form method="dialog" id="customizeForm">
-        <h3 id="customizeTitle">Personalizar item</h3>
-        <p id="customizePrice"></p>
+      <form method="dialog" id="customizeForm" class="customize-form">
+        <div class="customize-dialog__scroll">
+          <h3 id="customizeTitle">Personalizar item</h3>
+          <p id="customizePrice"></p>
 
-        <label for="itemQty">Quantidade</label>
-        <input type="number" id="itemQty" min="1" value="1" required />
+          <label for="itemQty">Quantidade</label>
+          <input type="number" id="itemQty" min="1" value="1" required />
 
-        <fieldset id="extrasWrap" class="extras-wrap">
-          <legend>Adicionais</legend>
-          <div id="extrasList"></div>
-        </fieldset>
+          <fieldset id="extrasWrap" class="extras-wrap">
+            <legend>Adicionais</legend>
+            <div id="extrasList"></div>
+          </fieldset>
 
-        <div id="upsellSection" class="upsell-section"></div>
+          <div id="upsellSection" class="upsell-section"></div>
 
-        <label for="itemNote">Observação do item</label>
-        <textarea id="itemNote" rows="2" placeholder="Ex.: bem quente, sem canela..."></textarea>
+          <label for="itemNote">Observação do item</label>
+          <textarea id="itemNote" rows="2" placeholder="Ex.: bem quente, sem canela..."></textarea>
 
-        <div class="dialog-actions">
-          <button type="button" id="cancelCustomize" class="btn-secondary">Cancelar</button>
-          <button type="submit" class="btn-primary">Adicionar ao pedido</button>
+          <div class="dialog-actions">
+            <button type="button" id="cancelCustomize" class="btn-secondary">Cancelar</button>
+            <button type="submit" class="btn-primary">Adicionar ao pedido</button>
+          </div>
         </div>
       </form>
     </dialog>

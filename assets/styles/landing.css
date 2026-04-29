@@ -22,7 +22,7 @@
       overflow-x: hidden;
     }
 
-    /* ── NAV ── */
+    /* NAV */
     nav {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -72,7 +72,7 @@
 
     .nav-cta:hover { background: var(--c700) !important; transform: translateY(-2px); }
 
-    /* ── HERO ── */
+    /* HERO */
     .hero {
       min-height: 100vh;
       display: grid;
@@ -243,7 +243,9 @@
     }
 
     .hero-card-info .tag {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
       padding: 5px 14px;
       background: rgba(255,255,255,0.15);
       border: 1px solid rgba(255,255,255,0.25);
@@ -253,6 +255,14 @@
       letter-spacing: 1px;
       text-transform: uppercase;
       margin-bottom: 12px;
+    }
+
+    .hero-card-info .tag i,
+    .float-icon i,
+    .highlight-img-placeholder i,
+    .step-num i,
+    .cat-icon i {
+      line-height: 1;
     }
 
     .hero-card-info h3 {
@@ -331,7 +341,7 @@
       font-weight: 700;
     }
 
-    /* ── STATS ── */
+    /* STATS */
     .stats {
       display: flex;
       justify-content: center;
@@ -368,7 +378,7 @@
       letter-spacing: 1px;
     }
 
-    /* ── SECTION WRAPPER ── */
+    /* SECTION WRAPPER */
     .section {
       max-width: 1200px;
       margin: 0 auto;
@@ -399,7 +409,7 @@
       max-width: 520px;
     }
 
-    /* ── DESTAQUES ── */
+    /* DESTAQUES */
     .highlights-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -488,7 +498,7 @@
     .highlight-card.featured p { color: var(--c300); }
     .highlight-card.featured .highlight-price { color: #ead9c8; }
 
-    /* ── COMO FUNCIONA ── */
+    /* COMO FUNCIONA */
     .how-section {
       background: var(--c900);
       color: #fff;
@@ -552,7 +562,7 @@
       line-height: 1.6;
     }
 
-    /* ── CARDÁPIO PREVIEW ── */
+    /* CARDÁPIO PREVIEW */
     .menu-preview {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -565,6 +575,7 @@
       display: flex;
       flex-direction: column;
       gap: 16px;
+      width: 100%;
     }
 
     .menu-cat-item {
@@ -579,6 +590,7 @@
       transition: all 0.25s ease;
       text-decoration: none;
       color: var(--c900);
+      width: 100%;
     }
 
     .menu-cat-item:hover {
@@ -690,7 +702,7 @@
       font-size: 0.9rem;
     }
 
-    /* ── DEPOIMENTOS ── */
+    /* DEPOIMENTOS */
     .testimonials-bg {
       background: var(--cream);
       padding: 100px 0;
@@ -753,7 +765,7 @@
       color: var(--c500);
     }
 
-    /* ── CTA FINAL ── */
+    /* CTA FINAL */
     .cta-section {
       padding: 100px 48px;
       text-align: center;
@@ -795,7 +807,7 @@
 
     .btn-whatsapp:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(37,211,102,0.3); }
 
-    /* ── FOOTER ── */
+    /* FOOTER */
     footer {
       background: var(--c900);
       color: var(--c300);
@@ -834,7 +846,7 @@
       font-size: 0.8rem;
     }
 
-    /* ── ANIMATIONS ── */
+    /* ANIMATIONS */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(28px); }
       to { opacity: 1; transform: translateY(0); }
@@ -856,10 +868,19 @@
       transform: translateY(0);
     }
 
-    /* ── RESPONSIVE ── */
+    /* RESPONSIVE */
     @media (max-width: 900px) {
       nav { padding: 16px 24px; }
       .nav-links { display: none; }
+
+      .menu-complete-layout {
+        grid-template-columns: 1fr !important;
+        gap: 32px !important;
+      }
+
+      .menu-complete-layout > div:first-child {
+        width: 100%;
+      }
 
       .hero {
         grid-template-columns: 1fr;
