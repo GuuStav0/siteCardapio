@@ -3,7 +3,7 @@
 Cardápio online do D'Gusta Café, com navegação por categorias, personalização de pedidos e envio direto pelo WhatsApp.
 
 ## Aplicação em Produção
-**Screenshot da aplicação em produção:**
+**Screenshots da aplicação em produção:**
 ![Landing Page](./assets/images/image.png)
 ![Cardapio](./assets/images/image-1.png)
 ![Personalização de pedido](./assets/images/image-2.png)

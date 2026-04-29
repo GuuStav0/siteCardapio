@@ -39,6 +39,7 @@ const orderForm        = document.getElementById("orderForm");
 const customerPhone    = document.getElementById("customerPhone");
 const customizeDialog  = document.getElementById("customizeDialog");
 const customizeForm    = document.getElementById("customizeForm");
+const heroCta          = document.querySelector(".hero__cta");
 
 // Helpers
 
@@ -52,6 +53,13 @@ function refreshUI() {
   const visibleProducts = filterProducts(PRODUCTS, searchTerm, currentFilter);
   renderMenu(visibleProducts, handleAddButtonClick);
   renderCart(cart, getDeliveryFee(), handleRemoveItem);
+}
+
+if (heroCta) {
+  heroCta.addEventListener("click", (event) => {
+    event.preventDefault();
+    document.getElementById("menu")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
 }
 
 // Carrinho
